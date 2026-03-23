@@ -33,15 +33,11 @@ from rapidfuzz import fuzz as rfuzz
 from rapidfuzz import process as rprocess
 
 try:
-    from google import genai as _google_genai
+    import google.generativeai as _google_genai
     _GENAI_OK = True
 except ImportError:
-    try:
-        import google.generativeai as _google_genai
-        _GENAI_OK = True
-    except ImportError:
-        _google_genai = None
-        _GENAI_OK = False
+    _google_genai = None
+    _GENAI_OK = False
 
 try:
     import faiss
@@ -434,7 +430,7 @@ class MahwousEngine:
         for attempt in range(3): # Auto-Resilience: 3 Retries
             try:
                 response = self.llm_client.chat.completions.create(
-                    model="gpt-4.1-mini",
+                    model="gpt-4o-mini",
                     messages=[{"role": "user", "content": prompt}],
                     response_format={ "type": "json_object" },
                     timeout=30
